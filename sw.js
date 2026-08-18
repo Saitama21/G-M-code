@@ -1,6 +1,6 @@
-const CACHE = "cnc-copilot-codes-calculations-v3";
+const CACHE = "cnc-copilot-codes-calculations-v8";
 const ROOT = new URL("./", self.registration.scope).href;
-const SHELL = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest", "./favicon.svg", "./apple-touch-icon.png", "./icon-192.png", "./icon-512.png", "./calculations/styles.css", "./calculations/app.js", "./calculations/core.js", "./calculations/data.js"].map(path => new URL(path, self.registration.scope).href);
+const SHELL = ["./", "./index.html", "./styles.css", "./app.js?v=2.1.1-scroll3", "./manifest.webmanifest", "./favicon.svg", "./apple-touch-icon.png", "./icon-192.png", "./icon-512.png", "./calculations/styles.css", "./calculations/app.js?v=2.1.1-scroll3", "./calculations/core.js", "./calculations/data.js"].map(path => new URL(path, self.registration.scope).href);
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));

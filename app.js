@@ -282,12 +282,14 @@ $$('[data-message]').forEach(btn=>btn.addEventListener("click",()=>showToast(btn
 $$('[data-module]').forEach(btn=>btn.addEventListener("click",()=>{
   const targetModule=btn.dataset.module;
   const calculations=targetModule==="calculations";
+  const wasCalculations=!$("#calculations-view").hidden;
   $("#reference-view").hidden=calculations;
   $("#calculations-view").hidden=!calculations;
   $("#module-title").textContent=calculations?"— Расчёты":"— Справочник кодов";
   $$('.bottom-dock [data-module]').forEach(item=>item.classList.toggle("active",item===btn));
-  if(calculations)window.CalculationsModule.mount($("#calculations-root"),{onRouteChange:title=>{$("#module-title").textContent=`— ${title}`;}});
-  window.scrollTo({top:0,behavior:"smooth"});
+  if(calculations&&wasCalculations&&!window.CalculationsModule.isHome())window.CalculationsModule.showHome();
+  else if(calculations&&!wasCalculations)window.CalculationsModule.mount($("#calculations-root"),{onRouteChange:title=>{$("#module-title").textContent=`— ${title}`;}});
+  if(!calculations||!wasCalculations)window.scrollTo({top:0,behavior:"smooth"});
 }));
 function showToast(message) { const t=$("#toast"); t.textContent=message; t.hidden=false; clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>t.hidden=true,2200); }
 

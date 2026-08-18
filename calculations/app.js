@@ -45,7 +45,7 @@ const shopTools = [
   ['wear','Износ пластины','Признаки, причины и действия']
 ];
 
-const state = {route:'home', pitchMode:'mm', drillType:'cut', refGroup:'Все', geometry:'cone',weightShape:'round',timeType:'turn',wear:'flank'};
+const state = {route:'home', homeScrollY:0, pitchMode:'mm', drillType:'cut', refGroup:'Все', geometry:'cone',weightShape:'round',timeType:'turn',wear:'flank'};
 const titles = {identify:'Определитель резьбы',drill:'Сверло под резьбу',profile:'Профиль резьбы',favorites:'Избранное',reference:'Быстрый справочник',geometry:'Геометрия',fits:'Допуски ISO 286',roughness:'Шероховатость',position:'Истинная позиция',deflection:'Прогиб державки',weight:'Вес заготовки',bolt:'Болтовая окружность',wires:'Резьба по 3 проволочкам',drillpoint:'Вершина сверла',time:'Время обработки',wear:'Износ пластины',settings:'Настройки'};
 const favorites = () => JSON.parse(localStorage.getItem('cncCopilotProjects') || '[]');
 const saveFavorites = items => localStorage.setItem('cncCopilotProjects',JSON.stringify(items));
@@ -54,7 +54,26 @@ const toast = msg => {const t=$('#toast');t.textContent=msg;t.classList.add('sho
 function header(key, sub='Работает без интернета'){
   return `<header class="calc-subheader"><button class="back" data-back aria-label="Назад">‹</button><p class="subtitle">${sub}</p></header>`;
 }
-function setRoute(route){state.route=route;onRouteChange(route==='home'?'Расчёты':titles[route]);render();scrollTo({top:0,behavior:'smooth'})}
+function pageScrollY(){return Math.max(0,window.scrollY||document.scrollingElement?.scrollTop||0)}
+function jumpTo(top){
+  const root=document.documentElement,previous=root.style.scrollBehavior;
+  root.style.scrollBehavior='auto';
+  document.scrollingElement.scrollTop=top;
+  window.scrollTo(0,top);
+  setTimeout(()=>{root.style.scrollBehavior=previous},120);
+}
+function restoreHomeScroll(){
+  jumpTo(state.homeScrollY);
+}
+function setRoute(route){
+  const leavingHome=state.route==='home'&&route!=='home';
+  if(leavingHome)state.homeScrollY=pageScrollY();
+  state.route=route;
+  onRouteChange(route==='home'?'Расчёты':titles[route]);
+  render();
+  if(route==='home')restoreHomeScroll();
+  else jumpTo(0);
+}
 
 function toolCards(list,start=0,compact=false){return list.map((t,i)=>`<button class="tool-card ${compact?'compact-card':''}" data-tool="${t[0]}"><span class="card-number">${String(start+i+1).padStart(2,'0')}</span><span class="tool-icon">${icon(t[0]==='favorites'?'favorite':t[0])}</span><h2>${t[1]}</h2><p>${t[2]}</p><span class="chev">›</span></button>`).join('')}
 function home(){
@@ -162,5 +181,9 @@ function bind(){
   $$('.input').forEach(input=>input.addEventListener('focus',()=>input.select()));
 }
 
-window.CalculationsModule={mount(root,options={}){app=root;onRouteChange=options.onRouteChange||(()=>{});state.route='home';onRouteChange('Расчёты');render();}};
+window.CalculationsModule={
+  mount(root,options={}){app=root;onRouteChange=options.onRouteChange||(()=>{});state.route='home';state.homeScrollY=0;onRouteChange('Расчёты');render();},
+  isHome(){return state.route==='home'},
+  showHome(){if(state.route!=='home')setRoute('home')}
+};
 })();
