@@ -286,13 +286,9 @@ $$('[data-module]').forEach(btn=>btn.addEventListener("click",()=>{
   $("#calculations-view").hidden=!calculations;
   $("#module-title").textContent=calculations?"— Расчёты":"— Справочник кодов";
   $$('.bottom-dock [data-module]').forEach(item=>item.classList.toggle("active",item===btn));
+  if(calculations)window.CalculationsModule.mount($("#calculations-root"),{onRouteChange:title=>{$("#module-title").textContent=`— ${title}`;}});
   window.scrollTo({top:0,behavior:"smooth"});
 }));
-window.addEventListener("message",event=>{
-  if(event.origin!==location.origin||event.data?.type!=="cnc-calculations-height")return;
-  const frame=$("#calculations-frame"),height=Math.max(Number(event.data.height)||0,650);
-  frame.style.height=`${height+16}px`;
-});
 function showToast(message) { const t=$("#toast"); t.textContent=message; t.hidden=false; clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>t.hidden=true,2200); }
 
 $("#voice-search").addEventListener("click",()=>{

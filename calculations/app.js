@@ -1,6 +1,8 @@
+(function(){
 const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-const app = $('#app');
+let app = null;
+let onRouteChange = () => {};
 const fmt = (n, d=3) => Number(n).toLocaleString('ru-RU',{maximumFractionDigits:d,minimumFractionDigits:0});
 const val = id => Number(String($(id)?.value || '').replace(',','.'));
 const icon = (name) => ({
@@ -50,9 +52,9 @@ const saveFavorites = items => localStorage.setItem('cncCopilotProjects',JSON.st
 const toast = msg => {const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),1800)};
 
 function header(key, sub='Работает без интернета'){
-  return `<header class="topbar"><button class="back" data-back aria-label="Назад">‹</button><div><p class="eyebrow">CNC COPILOT · РАСЧЁТЫ</p><h1 class="title">${titles[key]}</h1><p class="subtitle">${sub}</p></div></header>`;
+  return `<header class="calc-subheader"><button class="back" data-back aria-label="Назад">‹</button><p class="subtitle">${sub}</p></header>`;
 }
-function setRoute(route){state.route=route;render();scrollTo({top:0,behavior:'smooth'});const dockRoute=route==='favorites'?'favorites':route==='settings'?'settings':route==='reference'?'reference':'home';$$('.dock-btn').forEach(b=>b.classList.toggle('active',b.dataset.route===dockRoute))}
+function setRoute(route){state.route=route;onRouteChange(route==='home'?'Расчёты':titles[route]);render();scrollTo({top:0,behavior:'smooth'})}
 
 function toolCards(list,start=0,compact=false){return list.map((t,i)=>`<button class="tool-card ${compact?'compact-card':''}" data-tool="${t[0]}"><span class="card-number">${String(start+i+1).padStart(2,'0')}</span><span class="tool-icon">${icon(t[0]==='favorites'?'favorite':t[0])}</span><h2>${t[1]}</h2><p>${t[2]}</p><span class="chev">›</span></button>`).join('')}
 function home(){
@@ -160,9 +162,5 @@ function bind(){
   $$('.input').forEach(input=>input.addEventListener('focus',()=>input.select()));
 }
 
-$$('.dock-btn').forEach(b=>b.onclick=()=>setRoute(b.dataset.route));
-if(localStorage.getItem('engineeringTheme')==='light')document.body.classList.add('light');
-const updateOnline=()=>$('#offlineBadge').hidden=navigator.onLine;addEventListener('online',updateOnline);addEventListener('offline',updateOnline);updateOnline();
-render();
-const reportHeight=()=>parent.postMessage({type:'cnc-calculations-height',height:document.documentElement.scrollHeight},location.origin);
-new ResizeObserver(reportHeight).observe(document.body);addEventListener('load',reportHeight);
+window.CalculationsModule={mount(root,options={}){app=root;onRouteChange=options.onRouteChange||(()=>{});state.route='home';onRouteChange('Расчёты');render();}};
+})();
