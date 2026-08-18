@@ -13,6 +13,7 @@
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./calculations/styles.css">
+  <link rel="stylesheet" href="./modules.css?v=3.0.0">
   <title>CNC Copilot — Коды и расчёты</title>
 </head>
 <body>
@@ -57,12 +58,24 @@
       <div id="calculations-root" class="calculations-host" aria-live="polite"></div>
     </section>
 
+    <section id="instrument-view" class="module-view" hidden>
+      <div id="instrument-root" aria-live="polite"></div>
+    </section>
+
+    <section id="projects-view" class="module-view" hidden>
+      <div id="projects-root" aria-live="polite"></div>
+    </section>
+
+    <section id="profile-view" class="module-view" hidden>
+      <div id="profile-root" aria-live="polite"></div>
+    </section>
+
     <nav class="bottom-dock glass" aria-label="Главная навигация">
       <button class="active" data-module="reference"><span data-icon="book"></span><span>Справочник</span></button>
       <button data-module="calculations"><span data-icon="calculator"></span><span>Расчёты</span></button>
-      <button data-message="Раздел инструмента появится в следующем модуле"><span data-icon="tool"></span><span>Инструмент</span></button>
-      <button data-message="Проекты появятся в следующем модуле"><span data-icon="folder"></span><span>Проекты</span></button>
-      <button data-message="Профиль появится в следующем модуле"><span data-icon="user"></span><span>Профиль</span></button>
+      <button data-module="instrument"><span data-icon="tool"></span><span>Инструмент</span></button>
+      <button data-module="projects"><span data-icon="folder"></span><span>Проекты</span></button>
+      <button data-module="profile"><span data-icon="user"></span><span>Профиль</span></button>
     </nav>
 
     <div class="sheet-backdrop" id="sheet-backdrop" hidden><div class="detail-sheet" id="detail-sheet"></div></div>
@@ -70,7 +83,8 @@
   </main>
   <script src="./calculations/data.js" defer></script>
   <script src="./calculations/core.js" defer></script>
-  <script src="./calculations/app.js?v=2.1.1-scroll3" defer></script>
-  <script src="./app.js?v=2.1.1-scroll3" defer></script>
+  <script src="./calculations/app.js?v=3.0.0" defer></script>
+  <script src="./modules.js?v=3.0.0" defer></script>
+  <script src="./app.js?v=3.0.0" defer></script>
 </body>
 </html>

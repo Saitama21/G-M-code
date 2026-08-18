@@ -177,7 +177,7 @@ function bind(){
   bindSaves();
   $$('[data-delete-favorite]').forEach(b=>b.onclick=()=>{const items=favorites();items.splice(Number(b.dataset.deleteFavorite),1);saveFavorites(items);render()});
   $('#clearFavorites')?.addEventListener('click',()=>{saveFavorites([]);render();toast('Избранное очищено')});
-  $('#themeSwitch')?.addEventListener('click',()=>{document.body.classList.toggle('light');localStorage.setItem('engineeringTheme',document.body.classList.contains('light')?'light':'dark');render()});
+  $('#themeSwitch')?.addEventListener('click',()=>{const theme=document.body.classList.contains('light')?'dark':'light';window.CopilotModules?.setTheme(theme);app.classList.toggle('light',theme==='light');render()});
   $$('.input').forEach(input=>input.addEventListener('focus',()=>input.select()));
 }
 

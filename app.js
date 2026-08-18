@@ -204,6 +204,38 @@ const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 const listEl = $("#code-list");
 const categoryEl = $("#categories");
+let activeModule="reference",focusScrollY=0,keyboardWasOpen=false;
+
+function hardJump(top=0){
+  const html=document.documentElement,previous=html.style.scrollBehavior;
+  html.style.scrollBehavior="auto";
+  document.scrollingElement.scrollTop=top;
+  window.scrollTo(0,top);
+  setTimeout(()=>{html.style.scrollBehavior=previous},180);
+}
+function viewportTarget(){
+  if(activeModule==="calculations"&&window.CalculationsModule&&!window.CalculationsModule.isHome())return 0;
+  return Math.max(0,focusScrollY);
+}
+function resetViewport(top=viewportTarget()){
+  const focused=document.activeElement;
+  if(focused&&/^(INPUT|SELECT|TEXTAREA)$/.test(focused.tagName))focused.blur();
+  hardJump(top);
+  clearTimeout(resetViewport.timerA);clearTimeout(resetViewport.timerB);
+  resetViewport.timerA=setTimeout(()=>hardJump(top),140);
+  resetViewport.timerB=setTimeout(()=>hardJump(top),360);
+}
+window.CNCViewport={reset:resetViewport,jump:hardJump};
+document.addEventListener("focusin",event=>{if(/^(INPUT|SELECT|TEXTAREA)$/.test(event.target.tagName))focusScrollY=window.scrollY||0});
+document.addEventListener("click",event=>{if(event.target.closest(".calculations-host .primary"))resetViewport(0)},true);
+if(window.visualViewport){
+  const baseline=Math.max(window.visualViewport.height,window.innerHeight);
+  window.visualViewport.addEventListener("resize",()=>{
+    const focused=/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement?.tagName||"");
+    if(window.visualViewport.height<baseline-120){keyboardWasOpen=true;return}
+    if(keyboardWasOpen&&!focused){keyboardWasOpen=false;resetViewport()}
+  });
+}
 
 function currentBase() {
   if (state.tab === "favorites") return ALL_CODES.filter(c => state.favorites.includes(c.code));
@@ -278,18 +310,19 @@ $("#focus-search").addEventListener("click",()=>$("#search").focus());
 $("#search").addEventListener("input",e=>{state.query=e.target.value;render();});
 $("#clear-search").addEventListener("click",()=>{state.query="";$("#search").value="";render();});
 $("#sheet-backdrop").addEventListener("click",e=>{if(e.target.id==="sheet-backdrop")closeSheet();});
-$$('[data-message]').forEach(btn=>btn.addEventListener("click",()=>showToast(btn.dataset.message)));
 $$('[data-module]').forEach(btn=>btn.addEventListener("click",()=>{
   const targetModule=btn.dataset.module;
   const calculations=targetModule==="calculations";
-  const wasCalculations=!$("#calculations-view").hidden;
-  $("#reference-view").hidden=calculations;
-  $("#calculations-view").hidden=!calculations;
-  $("#module-title").textContent=calculations?"— Расчёты":"— Справочник кодов";
+  const wasCalculations=activeModule==="calculations";
+  const titles={reference:"Справочник кодов",calculations:"Расчёты",instrument:"Инструмент",projects:"Проекты",profile:"Профиль"};
+  ["reference","calculations","instrument","projects","profile"].forEach(name=>{$(`#${name}-view`).hidden=name!==targetModule});
+  $("#module-title").textContent=`— ${titles[targetModule]}`;
   $$('.bottom-dock [data-module]').forEach(item=>item.classList.toggle("active",item===btn));
   if(calculations&&wasCalculations&&!window.CalculationsModule.isHome())window.CalculationsModule.showHome();
   else if(calculations&&!wasCalculations)window.CalculationsModule.mount($("#calculations-root"),{onRouteChange:title=>{$("#module-title").textContent=`— ${title}`;}});
-  if(!calculations||!wasCalculations)window.scrollTo({top:0,behavior:"smooth"});
+  else if(!calculations&&targetModule!=="reference")window.CopilotModules.mount(targetModule,$(`#${targetModule}-root`),{toast:showToast,icon,viewport:window.CNCViewport});
+  activeModule=targetModule;
+  if(!calculations||!wasCalculations)resetViewport(0);
 }));
 function showToast(message) { const t=$("#toast"); t.textContent=message; t.hidden=false; clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>t.hidden=true,2200); }
 
@@ -305,4 +338,5 @@ $$('[data-quick]').forEach(btn=>btn.addEventListener("click",()=>{state.tab="M";
 function syncOnline(){const on=navigator.onLine;$("#offline-pill").classList.toggle("online",on);$("#offline-label").textContent=on?"Оффлайн готов":"Оффлайн";}
 window.addEventListener("online",syncOnline);window.addEventListener("offline",syncOnline);syncOnline();
 if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+window.CopilotModules?.applyStoredTheme();
 render();

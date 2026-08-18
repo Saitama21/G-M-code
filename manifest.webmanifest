@@ -1,7 +1,7 @@
 {
-  "name": "CNC Copilot — Коды и расчёты",
+  "name": "CNC Copilot — Цеховой помощник",
   "short_name": "CNC Copilot",
-  "description": "Офлайн-справочник кодов и инженерные расчёты для SINUMERIK 828D",
+  "description": "Офлайн-справочник, инженерные расчёты, инструмент и проекты для SINUMERIK 828D",
   "lang": "ru",
   "start_url": "./",
   "scope": "./",
