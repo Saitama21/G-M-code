@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#06101f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CNC Codes">
+  <meta name="description" content="Офлайн-справочник M- и G-кодов для SINUMERIK 828D">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="stylesheet" href="./styles.css">
+  <title>CNC Copilot — Справочник кодов</title>
+</head>
+<body>
+  <main class="app-shell">
+    <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div class="noise"></div>
+
+    <header class="top-header">
+      <div>
+        <span class="eyebrow">SINUMERIK 828D · CK52PT-Y</span>
+        <h1>CNC Copilot <span>— Справочник кодов</span></h1>
+      </div>
+      <div class="offline-pill" id="offline-pill"><span data-icon="wifi"></span><span id="offline-label">Оффлайн готов</span></div>
+    </header>
+
+    <nav class="segmented glass" aria-label="Разделы справочника">
+      <button class="active" data-tab="M">M-коды</button>
+      <button data-tab="G">G-коды</button>
+      <button data-tab="favorites"><span data-icon="star"></span>Избранное</button>
+      <button id="focus-search"><span data-icon="search"></span>Поиск</button>
+    </nav>
+
+    <div class="search-box glass">
+      <span data-icon="search"></span>
+      <input id="search" type="search" placeholder="Поиск по коду или описанию…" aria-label="Поиск по справочнику" autocomplete="off">
+      <button class="clear-search" id="clear-search" aria-label="Очистить">×</button>
+      <button class="mic-button" id="voice-search" aria-label="Голосовой поиск"><span data-icon="mic"></span></button>
+    </div>
+
+    <section class="category-strip" id="categories" aria-label="Категории"></section>
+    <div class="result-count"><span id="result-label">M-коды</span><b id="result-count">0</b></div>
+
+    <section class="content-grid">
+      <div class="code-list" id="code-list" role="list"></div>
+      <div class="detail-desktop" id="detail-desktop"></div>
+    </section>
+
+    <section class="quick-codes glass" id="quick-codes"><span><b>ϟ</b> Быстрые коды</span></section>
+
+    <nav class="bottom-dock glass" aria-label="Главная навигация">
+      <button class="active"><span data-icon="book"></span><span>Справочник</span></button>
+      <button data-message="Расчёты появятся в следующем модуле"><span data-icon="calculator"></span><span>Расчёты</span></button>
+      <button data-message="Раздел инструмента появится в следующем модуле"><span data-icon="tool"></span><span>Инструмент</span></button>
+      <button data-message="Проекты появятся в следующем модуле"><span data-icon="folder"></span><span>Проекты</span></button>
+      <button data-message="Профиль появится в следующем модуле"><span data-icon="user"></span><span>Профиль</span></button>
+    </nav>
+
+    <div class="sheet-backdrop" id="sheet-backdrop" hidden><div class="detail-sheet" id="detail-sheet"></div></div>
+    <div class="toast" id="toast" hidden></div>
+  </main>
+  <script src="./app.js" defer></script>
+</body>
+</html>
