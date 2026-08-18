@@ -7,12 +7,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CNC Codes">
-  <meta name="description" content="Офлайн-справочник M- и G-кодов для SINUMERIK 828D">
+  <meta name="description" content="Офлайн-справочник кодов и инженерные расчёты для SINUMERIK 828D">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="stylesheet" href="./styles.css">
-  <title>CNC Copilot — Справочник кодов</title>
+  <title>CNC Copilot — Коды и расчёты</title>
 </head>
 <body>
   <main class="app-shell">
@@ -21,11 +21,12 @@
     <header class="top-header">
       <div>
         <span class="eyebrow">SINUMERIK 828D · CK52PT-Y</span>
-        <h1>CNC Copilot <span>— Справочник кодов</span></h1>
+        <h1>CNC Copilot <span id="module-title">— Справочник кодов</span></h1>
       </div>
       <div class="offline-pill" id="offline-pill"><span data-icon="wifi"></span><span id="offline-label">Оффлайн готов</span></div>
     </header>
 
+    <section id="reference-view" class="module-view">
     <nav class="segmented glass" aria-label="Разделы справочника">
       <button class="active" data-tab="M">M-коды</button>
       <button data-tab="G">G-коды</button>
@@ -49,10 +50,15 @@
     </section>
 
     <section class="quick-codes glass" id="quick-codes"><span><b>ϟ</b> Быстрые коды</span></section>
+    </section>
+
+    <section id="calculations-view" class="module-view calculations-view" hidden>
+      <iframe id="calculations-frame" title="Инженерные расчёты CNC Copilot" src="./calculations/index.html" scrolling="no"></iframe>
+    </section>
 
     <nav class="bottom-dock glass" aria-label="Главная навигация">
-      <button class="active"><span data-icon="book"></span><span>Справочник</span></button>
-      <button data-message="Расчёты появятся в следующем модуле"><span data-icon="calculator"></span><span>Расчёты</span></button>
+      <button class="active" data-module="reference"><span data-icon="book"></span><span>Справочник</span></button>
+      <button data-module="calculations"><span data-icon="calculator"></span><span>Расчёты</span></button>
       <button data-message="Раздел инструмента появится в следующем модуле"><span data-icon="tool"></span><span>Инструмент</span></button>
       <button data-message="Проекты появятся в следующем модуле"><span data-icon="folder"></span><span>Проекты</span></button>
       <button data-message="Профиль появится в следующем модуле"><span data-icon="user"></span><span>Профиль</span></button>

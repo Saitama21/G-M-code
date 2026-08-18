@@ -1,7 +1,7 @@
 {
-  "name": "CNC Copilot — Справочник кодов",
-  "short_name": "CNC Codes",
-  "description": "Офлайн-справочник M- и G-кодов для SINUMERIK 828D",
+  "name": "CNC Copilot — Коды и расчёты",
+  "short_name": "CNC Copilot",
+  "description": "Офлайн-справочник кодов и инженерные расчёты для SINUMERIK 828D",
   "lang": "ru",
   "start_url": "./",
   "scope": "./",

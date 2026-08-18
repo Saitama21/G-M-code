@@ -150,6 +150,9 @@ button { color: inherit; -webkit-tap-highlight-color: transparent; }
 .bottom-dock button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: 0; border-radius: 23px; color: #aeb6c6; background: transparent; font-size: 12px; cursor: pointer; transition: .2s ease; }
 .bottom-dock button.active { color: white; background: linear-gradient(160deg, rgba(71,112,255,.7), rgba(0,125,255,.78)); box-shadow: 0 0 22px rgba(0,137,255,.58), inset 0 1px 0 rgba(255,255,255,.26); }
 .bottom-dock button.active svg { color: #50e9ff; filter: drop-shadow(0 0 7px rgba(0,223,255,.9)); }
+.module-view[hidden] { display: none !important; }
+.calculations-view { min-height: calc(100vh - 190px); margin-top: -8px; }
+.calculations-view iframe { display: block; width: 100%; height: 720px; min-height: 720px; border: 0; background: transparent; border-radius: 28px; overflow: hidden; }
 
 .sheet-backdrop { display: none; }
 .toast { position: fixed; z-index: 80; left: 50%; bottom: calc(108px + env(safe-area-inset-bottom)); transform: translateX(-50%); max-width: min(90vw, 430px); padding: 12px 18px; border: 1px solid rgba(255,255,255,.15); border-radius: 99px; color: white; background: rgba(18,27,45,.94); box-shadow: 0 14px 35px rgba(0,0,0,.4); backdrop-filter: blur(20px); text-align: center; font-size: 13px; animation: toast-in .25s both; }
@@ -194,6 +197,8 @@ button { color: inherit; -webkit-tap-highlight-color: transparent; }
   .bottom-dock { width: calc(100% - 18px); min-height: 72px; bottom: max(6px, env(safe-area-inset-bottom)); border-radius: 26px; padding: 5px; }
   .bottom-dock button { border-radius: 20px; font-size: 9px; }
   .bottom-dock svg { width: 23px; height: 23px; }
+  .calculations-view { margin-top: -16px; }
+  .calculations-view iframe { height: 650px; min-height: 650px; border-radius: 0; }
 }
 
 @media (max-width: 370px) {

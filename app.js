@@ -279,6 +279,20 @@ $("#search").addEventListener("input",e=>{state.query=e.target.value;render();})
 $("#clear-search").addEventListener("click",()=>{state.query="";$("#search").value="";render();});
 $("#sheet-backdrop").addEventListener("click",e=>{if(e.target.id==="sheet-backdrop")closeSheet();});
 $$('[data-message]').forEach(btn=>btn.addEventListener("click",()=>showToast(btn.dataset.message)));
+$$('[data-module]').forEach(btn=>btn.addEventListener("click",()=>{
+  const targetModule=btn.dataset.module;
+  const calculations=targetModule==="calculations";
+  $("#reference-view").hidden=calculations;
+  $("#calculations-view").hidden=!calculations;
+  $("#module-title").textContent=calculations?"— Расчёты":"— Справочник кодов";
+  $$('.bottom-dock [data-module]').forEach(item=>item.classList.toggle("active",item===btn));
+  window.scrollTo({top:0,behavior:"smooth"});
+}));
+window.addEventListener("message",event=>{
+  if(event.origin!==location.origin||event.data?.type!=="cnc-calculations-height")return;
+  const frame=$("#calculations-frame"),height=Math.max(Number(event.data.height)||0,650);
+  frame.style.height=`${height+16}px`;
+});
 function showToast(message) { const t=$("#toast"); t.textContent=message; t.hidden=false; clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>t.hidden=true,2200); }
 
 $("#voice-search").addEventListener("click",()=>{
