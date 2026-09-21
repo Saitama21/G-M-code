@@ -1,4 +1,4 @@
-const CACHE = "cnc-copilot-complete-v3";
+const CACHE="cnc-copilot-complete-v3-dockfix1";
 const ROOT = new URL("./", self.registration.scope).href;
 const SHELL = ["./", "./index.html", "./styles.css", "./modules.css?v=3.0.0", "./app.js?v=3.0.0", "./modules.js?v=3.0.0", "./manifest.webmanifest", "./favicon.svg", "./apple-touch-icon.png", "./icon-192.png", "./icon-512.png", "./calculations/styles.css", "./calculations/app.js?v=3.0.0", "./calculations/core.js", "./calculations/data.js"].map(path => new URL(path, self.registration.scope).href);
 
