@@ -209,3 +209,18 @@ button { color: inherit; -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* UI_CONTRACT_DOCK_V1 — Safari-independent dock */
+
+:root{--dock-bottom:7px;--dock-width:95%;--dock-height:68px}
+@media (min-width:390px) and (max-width:430px){:root{--dock-bottom:2px;--dock-width:87%;--dock-height:68px}}
+.bottom-dock{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:var(--dock-bottom)!important;
+  width:min(var(--dock-width),1084px)!important;
+  min-height:var(--dock-height)!important;
+  transform:translateX(-50%)!important;
+}
