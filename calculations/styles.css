@@ -46,3 +46,18 @@
 .calculations-host .calc-subheader{display:flex;align-items:center;gap:14px;margin:4px 2px 22px}
 .calculations-host .calc-subheader .subtitle{margin:0}
 @media(max-width:540px){.calculations-host{padding-top:4px}.calculations-host .calc-subheader{margin-bottom:18px}}
+
+
+/* UI_CONTRACT_DOCK_V1 — Safari-independent dock */
+
+:root{--dock-bottom:7px;--dock-width:95%;--dock-height:68px}
+@media (min-width:390px) and (max-width:430px){:root{--dock-bottom:2px;--dock-width:87%;--dock-height:68px}}
+.calculations-host .dock{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:var(--dock-bottom)!important;
+  width:min(var(--dock-width),640px)!important;
+  height:var(--dock-height)!important;
+  transform:translateX(-50%)!important;
+}
